@@ -1,11 +1,17 @@
 .App {
   margin: 0 auto;
   width: 70vw;
-  border: 1px solid red;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .rowsCountInput {
-  display: flex;
   width: 100%;
-  justify-content: space-around;
+  display: flex;
+  
+}
+
+.button-group {
+  margin-top: 20px;
 }

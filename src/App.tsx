@@ -32,7 +32,7 @@ function App() {
     onSubmit: values => {},
   });
 
-  const {values, setValues} = formik
+  const {values, setValues, resetForm} = formik
 
   const createRows = () => {
     const totalRows = new Array(Number(rowsCount)).fill('').map((e, i) => {
@@ -48,11 +48,31 @@ function App() {
 
   const onExport = () => {
     console.log(values);
+
+    const result = values.rows.map((item, index) => {
+      let sw = item.softwareNumber.split(' ').sort().map(num => ({sw: num}))
+      let hw = item.hardwareNumber.split(' ').sort().map(num => ({hw: num}))
+      let arr = []
+      for(let i = 0; i < sw.length; i++) {
+        arr.push({
+          serial: i === 0 ? item.serialNumber : '',
+          sw: sw[i] ? sw[i].sw : '',
+          hw: hw[i] ? hw[i].hw : '',
+        })
+      }
+      return arr
+    })
+
     const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.json_to_sheet(values.rows);
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Dates");
-    XLSX.utils.book_append_sheet(workbook, worksheet, "ZXC");
+    for(let i = 0; i < result.length; i++) {
+      const ws = XLSX.utils.json_to_sheet(result[i]);
+      XLSX.utils.book_append_sheet(workbook, ws, `Data-${i}`)
+    }
     XLSX.writeFile(workbook, "Presidents.xlsx", { compression: true });
+  }
+
+  const resetRows = () => {
+    resetForm()
   }
 
   return (
@@ -64,11 +84,16 @@ function App() {
           placeholder='How much row do you need?'
           value={rowsCount}
           onChange={handleRowsChange}
+          type="number"
+          fullWidth
         />
         <Button variant="contained" onClick={createRows} disabled={isDisabled}>Click</Button>
       </Box>
       {Number(rowsCount) > 0 && <Rows values={values} formik={formik}/>}
-      <Button onClick={onExport}>Export Xlxs file</Button>
+      <Box className="button-group">
+        <Button variant="contained" onClick={onExport}>Export Xlxs file</Button>
+        <Button variant="contained" onClick={resetRows}>Reset rows</Button>
+      </Box>
     </Box>
   )
 }
