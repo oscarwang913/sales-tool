@@ -1,0 +1,10 @@
+.row {
+  width: 100%;
+  margin: 20px 0 10px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.field {
+  width: 30%;
+}
