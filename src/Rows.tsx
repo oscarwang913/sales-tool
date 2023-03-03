@@ -27,17 +27,17 @@ const Rows = ({ values, formik }: any) => {
                   className="field"
                 />
                 <TextField 
-                  value={row.softwareNumber}
-                  name={`rows.${index}.softwareNumber`}
-                  onChange={(e:any) => onChange(e, index, 'softwareNumber')}
-                  label="softwareNumber"
-                  className="field"
-                />
-                <TextField 
                   value={row.hardwareNumber}
                   name={`rows.${index}.hardwareNumber`}
                   onChange={(e:any) => onChange(e, index, 'hardwareNumber')}
                   label="hardwareNumber"
+                  className="field"
+                />
+                <TextField 
+                  value={row.softwareNumber}
+                  name={`rows.${index}.softwareNumber`}
+                  onChange={(e:any) => onChange(e, index, 'softwareNumber')}
+                  label="softwareNumber"
                   className="field"
                 />
               </Box>
