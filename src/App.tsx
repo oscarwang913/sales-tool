@@ -3,7 +3,8 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useFormik } from 'formik';
-import * as XLSX from 'xlsx';
+import exportWorkbook from './utils/exportWorkBook'
+import generateRows from './utils/generateRows';
 import './App.css'
 
 import Rows from './Rows';
@@ -35,41 +36,10 @@ function App() {
   const {values, setValues, resetForm} = formik
 
   const createRows = () => {
-    const totalRows = new Array(Number(rowsCount)).fill('').map((e, i) => {
-      return {
-        serialNumber: '',
-        softwareNumber: '',
-        hardwareNumber: '',
-      }
-    })
+    const totalRows = generateRows(Number(rowsCount))
     setValues({rows: totalRows});
   }
   const isDisabled = Number(rowsCount) > 20
-
-  const onExport = () => {
-    console.log(values);
-
-    const result = values.rows.map((item, index) => {
-      let sw = item.softwareNumber.split(' ').sort().map(num => ({sw: num}))
-      let hw = item.hardwareNumber.split(' ').sort().map(num => ({hw: num}))
-      let arr = []
-      for(let i = 0; i < sw.length; i++) {
-        arr.push({
-          serial: i === 0 ? item.serialNumber : '',
-          sw: sw[i] ? sw[i].sw : '',
-          hw: hw[i] ? hw[i].hw : '',
-        })
-      }
-      return arr
-    })
-
-    const workbook = XLSX.utils.book_new();
-    for(let i = 0; i < result.length; i++) {
-      const ws = XLSX.utils.json_to_sheet(result[i]);
-      XLSX.utils.book_append_sheet(workbook, ws, `Data-${i}`)
-    }
-    XLSX.writeFile(workbook, "Presidents.xlsx", { compression: true });
-  }
 
   const resetRows = () => {
     resetForm()
@@ -91,7 +61,7 @@ function App() {
       </Box>
       {Number(rowsCount) > 0 && <Rows values={values} formik={formik}/>}
       <Box className="button-group">
-        <Button variant="contained" onClick={onExport}>Export Xlxs file</Button>
+        <Button variant="contained" onClick={() => exportWorkbook(values?.rows)}>Export Xlxs file</Button>
         <Button variant="contained" onClick={resetRows}>Reset rows</Button>
       </Box>
     </Box>
