@@ -13,9 +13,12 @@
     "@emotion/styled": "^11.10.6",
     "@mui/icons-material": "^5.11.9",
     "@mui/material": "^5.11.10",
+    "@types/ramda": "^0.29.0",
     "formik": "^2.2.9",
+    "ramda": "^0.29.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.10.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
