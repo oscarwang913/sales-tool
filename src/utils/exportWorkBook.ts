@@ -1,5 +1,5 @@
 import * as XLSX from 'xlsx';
-import { RowsData } from '../App';
+import { RowsData } from '../ExcelTool';
 const exportWorkbook = (values: RowsData[]) => {
   const result = values.map((item) => {
     let sw = item.softwareNumber.split(' ').sort().map(num => ({sw: num}))
